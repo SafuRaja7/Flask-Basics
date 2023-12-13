@@ -10,48 +10,48 @@ players =[
 ]
 
 @app.route('/players',methods = ['GET','POST'])
-def books():
+def players():
     if request.method == 'GET':
         if len(players)>0:
             return jsonify(players)
         else:
             'Nothing found',404
     if request.method == 'POST':
-        new_title = request.form['name']
-        new_author = request.form['coach']
+        new_name = request.form['name']
+        new_coach = request.form['coach']
         newId = players[-1]['id'] +1
 
         new_obj = {
             'id': newId,
-            'name': new_title,
-            'coach': new_author,
+            'name': new_name,
+            'coach': new_coach,
         }
         players.append(new_obj)
         return jsonify(players),201
     
 @app.route('/player/<int:id>',methods = ['GET','PUT','DELETE'])
-def single_book(id):
+def single_player(id):
     if request.method == 'GET':
-        for book in players:
-            if book['id'] == id:
-                return jsonify(book)
+        for player in players:
+            if player['id'] == id:
+                return jsonify(player)
             pass
 
     if request.method == 'PUT':
-        for book in players:
-            if book['id'] == id:
-                book['coach'] = request.form['coach']
-                book['name'] = request.form['name']
-                updated_book = {
+        for player in players:
+            if player['id'] == id:
+                player['coach'] = request.form['coach']
+                player['name'] = request.form['name']
+                updated_player = {
                     'id' : id,
-                    'name': book['name'],
-                    'coach' : book['coach'],
+                    'name': player['name'],
+                    'coach' : player['coach'],
                 }
-                return jsonify(updated_book)
+                return jsonify(updated_player)
             
     if request.method == 'DELETE':
-        for index,book in enumerate(players):
-            if book['id'] == id:
+        for index,player in enumerate(players):
+            if player['id'] == id:
                 players.pop(index)
                 return jsonify(players)
 
