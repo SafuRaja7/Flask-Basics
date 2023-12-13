@@ -2,58 +2,58 @@ from flask import Flask,request,jsonify
 
 app = Flask(__name__)
 
-books_list =[
-    {"id":0,"title":"Book 1","author":"Author 1"},
-    {"id":1,"title":"Book 1","author":"Author 1"},
-    {"id":2,"title":"Book 1","author":"Author 1"},
-    {"id":3,"title":"Book 1","author":"Author 1"},
+players =[
+    {"id":0,"name":"Player 1","coach":"Coach 1"},
+    {"id":1,"name":"Player 2","coach":"Coach 2"},
+    {"id":2,"name":"Player 3","coach":"Coach 3"},
+    {"id":3,"name":"Player 4","coach":"Coach 4"},
 ]
 
-@app.route('/books',methods = ['GET','POST'])
+@app.route('/players',methods = ['GET','POST'])
 def books():
     if request.method == 'GET':
-        if len(books_list)>0:
-            return jsonify(books_list)
+        if len(players)>0:
+            return jsonify(players)
         else:
             'Nothing found',404
     if request.method == 'POST':
-        new_title = request.form['title']
-        new_author = request.form['author']
-        newId = books_list[-1]['id'] +1
+        new_title = request.form['name']
+        new_author = request.form['coach']
+        newId = players[-1]['id'] +1
 
         new_obj = {
             'id': newId,
-            'title': new_title
-            ,'author': new_author
+            'name': new_title,
+            'coach': new_author,
         }
-        books_list.append(new_obj)
-        return jsonify(books_list),201
+        players.append(new_obj)
+        return jsonify(players),201
     
-@app.route('/book/<int:id>',methods = ['GET','PUT','DELETE'])
+@app.route('/player/<int:id>',methods = ['GET','PUT','DELETE'])
 def single_book(id):
     if request.method == 'GET':
-        for book in books_list:
+        for book in players:
             if book['id'] == id:
                 return jsonify(book)
             pass
 
     if request.method == 'PUT':
-        for book in books_list:
+        for book in players:
             if book['id'] == id:
-                book['author'] = request.form['author']
-                book['title'] = request.form['title']
+                book['coach'] = request.form['coach']
+                book['name'] = request.form['name']
                 updated_book = {
                     'id' : id,
-                    'title': book['title'],
-                    'author' : book['author'],
+                    'name': book['name'],
+                    'coach' : book['coach'],
                 }
                 return jsonify(updated_book)
             
     if request.method == 'DELETE':
-        for index,book in enumerate(books_list):
+        for index,book in enumerate(players):
             if book['id'] == id:
-                books_list.pop(index)
-                return jsonify(books_list)
+                players.pop(index)
+                return jsonify(players)
 
 
     
